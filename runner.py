@@ -37,7 +37,7 @@ def predict(args):
         with open(args.output_file, 'wb') as f:
             pickle.dump(path_numpy, f)
         
-        print(f"Prediction results saved to {args.output_file}")
+        print("Prediction results saved to {}".format(args.output_file))
   
         return path
     
