@@ -64,7 +64,9 @@ def main():
     if args.command == 'train':
         train(args)
     elif args.command == 'predict':
-        predict(args)
+        prediction = predict(args)
+        print(prediction)
+        return "Prediction saved to {}".format(args.output_file)
     else:
         parser.print_help()
 
