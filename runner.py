@@ -28,14 +28,6 @@ def predict(args):
         x0 = load_pickle(args.x0_file)
         t = load_pickle(args.t_file)
         
-        # Convert x0 and t to numpy arrays
-        x0 = np.array(x0)
-        if isinstance(t, list):
-            t = [np.array(ti) for ti in t]
-        else:
-            t = np.array(t)
-        
-        
         path = npde.predict(x0, t)
   
         # Save the prediction results
