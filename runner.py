@@ -35,14 +35,9 @@ def predict(args):
         else:
             t = np.array(t)
         
-        try:
-            path = npde.predict(x0, t)
-        except TypeError as e:
-            print(f"Error during prediction: {e}")
-            print(f"Type of x0: {type(x0)}, shape: {np.shape(x0)}")
-            print(f"Type of t: {type(t)}, shape: {np.shape(t)}")
-            raise
         
+        path = npde.predict(x0, t)
+  
         # Save the prediction results
         with open(args.output_file, 'wb') as f:
             pickle.dump(path, f)
