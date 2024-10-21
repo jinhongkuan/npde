@@ -90,12 +90,12 @@ def build_model(sess,t,Y,model='sde',sf0=1.0,ell0=[2,2],sfg0=1.0,ellg0=[1e5],
 
     kern = OperatorKernel(sf0=sf0, ell0=ell0, ktype=ktype, fix_ell=fix_ell, fix_sf=fix_sf)
 
-    if model is 'ode':
+    if model == 'ode':
         npde = NPODE(Z0=Z0, U0=U0, sn0=sn0, kern=kern, whiten=whiten, fix_Z=fix_Z, fix_U=fix_U, fix_sn=fix_sn)
         sess.run(tf.global_variables_initializer())
         return npde
 
-    elif model is 'sde':
+    elif model == 'sde':
         diffus = BrownianMotion(sf0=sfg0, ell0=ellg0, U0=Ug0, Z0=Z0, whiten=whiten,\
                fix_sf=fix_sfg, fix_ell=fix_ellg, fix_Z=fix_Zg, fix_U=fix_Ug)
         npde = NPSDE(Z0=Z0, U0=U0, sn0=sn0, kern=kern, diffus=diffus, whiten=whiten,\
