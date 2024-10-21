@@ -1,6 +1,7 @@
 import argparse
 import pickle
 import tensorflow as tf
+import numpy as np
 from npde_helper import build_model, fit_model, load_model, save_model
 
 def load_pickle(file_path):
@@ -27,7 +28,20 @@ def predict(args):
         x0 = load_pickle(args.x0_file)
         t = load_pickle(args.t_file)
         
-        path = npde.predict(x0, t)
+        # Convert x0 and t to numpy arrays
+        x0 = np.array(x0)
+        if isinstance(t, list):
+            t = [np.array(ti) for ti in t]
+        else:
+            t = np.array(t)
+        
+        try:
+            path = npde.predict(x0, t)
+        except TypeError as e:
+            print(f"Error during prediction: {e}")
+            print(f"Type of x0: {type(x0)}, shape: {np.shape(x0)}")
+            print(f"Type of t: {type(t)}, shape: {np.shape(t)}")
+            raise
         
         # Save the prediction results
         with open(args.output_file, 'wb') as f:
