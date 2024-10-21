@@ -30,9 +30,6 @@ def predict(args):
         
         path = npde.predict(x0, t)
   
-        # Save the prediction results
-        with open(args.output_file, 'wb') as f:
-            pickle.dump(path, f)
         return path
     
 def main():
