@@ -1,7 +1,7 @@
 import argparse
 import pickle
 import tensorflow as tf
-from npde_helper import build_model, fit_model, load_model
+from npde_helper import build_model, fit_model, load_model, save_model
 
 def load_pickle(file_path):
     with open(file_path, 'rb') as f:
@@ -17,6 +17,9 @@ def train(args):
         
         npde = fit_model(sess, npde, t, Y, num_iter=args.num_iter, print_every=args.print_every, 
                          eta=args.eta, plot_=args.plot)
+        
+        save_model(npde, args.output_file)
+        return "Model trained and saved to {}".format(args.output_file)
 
 def predict(args):
     with tf.Session() as sess:
@@ -29,7 +32,8 @@ def predict(args):
         # Save the prediction results
         with open(args.output_file, 'wb') as f:
             pickle.dump(path, f)
-
+        return path
+    
 def main():
     parser = argparse.ArgumentParser(description='NPDE CLI')
     subparsers = parser.add_subparsers(dest='command')
@@ -48,6 +52,7 @@ def main():
     train_parser.add_argument('--print_every', type=int, default=50, help='Print interval')
     train_parser.add_argument('--eta', type=float, default=0.02, help='Learning rate')
     train_parser.add_argument('--plot', action='store_true', help='Whether to plot results')
+    train_parser.add_argument('--output_file', required=True, help='File to save the trained model')
 
     # Predict parser
     predict_parser = subparsers.add_parser('predict')
