@@ -29,6 +29,15 @@ def predict(args):
         t = load_pickle(args.t_file)
         
         path = npde.predict(x0, t)
+
+        # Convert tensor to numpy array
+        path_numpy = path.eval()
+        
+        # Save as pickle
+        with open(args.output_file, 'wb') as f:
+            pickle.dump(path_numpy, f)
+        
+        print(f"Prediction results saved to {args.output_file}")
   
         return path
     
@@ -64,9 +73,7 @@ def main():
     if args.command == 'train':
         train(args)
     elif args.command == 'predict':
-        prediction = predict(args)
-        print(prediction)
-        return "Prediction saved to {}".format(args.output_file)
+        predict(args)
     else:
         parser.print_help()
 
